@@ -1,0 +1,15 @@
+{
+  "id": "./",
+  "name": "SACERDOS",
+  "short_name": "SACERDOS",
+  "description": "The Holy Thursday letters and Pastores Dabo Vobis by Saint John Paul II.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#172b28",
+  "background_color": "#f5f2e9",
+  "icons": [
+    {"src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any"},
+    {"src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable"}
+  ]
+}
