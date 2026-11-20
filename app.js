@@ -16,7 +16,7 @@ const letterTitles = {
 const exhortationSubtitles = {
   es:'La formación de los sacerdotes', it:'La formazione dei sacerdoti',
   de:'Die Priesterausbildung', nl:'De vorming van priesters',
-  'zh-Hant':'我要給你們牧者', 'zh-Hans':'我要给你们牧者',
+  'zh-Hant':'我要給你們牧者|我將賜予你們牧人', 'zh-Hans':'我要给你们牧者',
   uk:'Формація священників', ru:'Подготовка священников', ar:'تنشئة الكهنة',
   fr:'La formation des prêtres', pl:'Formacja kapłanów',
 };
@@ -64,10 +64,61 @@ function link(label, href) {
   return node;
 }
 
+const prayerTitles = {
+  es:'Oración por los sacerdotes en el Jueves Santo de 1982',
+  it:'Preghiera per i sacerdoti nel Giovedì Santo del 1982',
+  de:'Gebet für die Priester zum Gründonnerstag 1982',
+  nl:'Gebed voor de priesters op Witte Donderdag 1982',
+  'zh-Hant':'1982年聖週四為司鐸祈禱',
+  'zh-Hans':'1982年圣周四为司铎祈祷',
+  uk:'Молитва за священників у Великий четвер 1982 року',
+  ru:'Молитва о священниках в Великий четвер 1982 года',
+  ar:'صلاة من أجل الكهنة في خميس الأسرار ١٩٨٢',
+  fr:'Prière pour les prêtres le Jeudi saint 1982',
+  pl:'Modlitwa za kapłanów w Wielki Czwartek 1982 roku',
+};
+
+const bishopsLetterSubtitles = {
+  'dominicae-cenae': {
+    en:'On the Mystery and Worship of the Eucharist',
+    es:'Sobre el misterio y el culto de la Eucaristía',
+    it:'Sul mistero e il culto dell’Eucaristia',
+    de:'Über das Mysterium und den Kult der Eucharistie',
+    nl:'Over het mysterie en de verering van de eucharistie',
+    'zh-Hant':'論聖體的奧蹟與敬禮',
+    'zh-Hans':'论圣体的奥迹与敬礼',
+    uk:'Про таїнство і культ Євхаристії',
+    ru:'О таинстве и почитании Евхаристии',
+    ar:'في سرّ الإفخارستيا وعبادتها',
+    fr:'Sur le mystère et le culte de l’Eucharistie',
+    pl:'O tajemnicy i kulcie Eucharystii',
+  },
+  'a-concilio-constantinopolitano-i': {
+    en:'On the Councils of Constantinople and Ephesus',
+    es:'Sobre los concilios de Constantinopla y Éfeso',
+    it:'Sui concili di Costantinopoli e di Efeso',
+    de:'Über die Konzilien von Konstantinopel und Ephesus',
+    nl:'Over de concilies van Constantinopel en Efeze',
+    'zh-Hant':'論君士坦丁堡與厄弗所大公會議',
+    'zh-Hans':'论君士坦丁堡与厄弗所大公会议',
+    uk:'Про Константинопольський і Ефеський собори',
+    ru:'О Константинопольском и Эфесском соборах',
+    ar:'في مجمعَي القسطنطينية وأفسس',
+    fr:'Sur les conciles de Constantinople et d’Éphèse',
+    pl:'O soborach w Konstantynopolu i Efezie',
+  },
+};
+
 function displayTitle(doc, locale) {
   if (doc.kind === 'priests-letter') {
     return letterTitles[locale]?.(doc.year) ?? doc.title;
   }
+  if (doc.kind === 'priests-prayer') return prayerTitles[locale] ?? doc.title;
+  if (doc.kind === 'bishops-letter') {
+    const subtitle = bishopsLetterSubtitles[doc.id]?.[locale];
+    return subtitle ? `${doc.title} · ${subtitle}` : doc.title;
+  }
+  if (doc.kind !== 'post-synodal-apostolic-exhortation') return doc.title;
   const subtitle = exhortationSubtitles[locale];
   if (!subtitle) return doc.title;
   if (locale.startsWith('zh')) return `${subtitle} · ${doc.title}`;
@@ -92,6 +143,66 @@ function fold(text, locale) {
   return normalized.normalize('NFD').replace(/\p{M}/gu, '').replace(/\s+/gu, ' ').trim();
 }
 
+const splitTitles = {
+  'a-concilio-constantinopolitano-i/ar': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/it': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/nl': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/pl': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/ru': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/uk': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/zh-Hans': [0, 1, 2],
+  'a-concilio-constantinopolitano-i/zh-Hant': [0, 1, 2],
+  'dominicae-cenae/ar': [0],
+  'dominicae-cenae/de': [0],
+  'dominicae-cenae/nl': [0],
+  'dominicae-cenae/pl': [0],
+  'dominicae-cenae/ru': [0],
+  'dominicae-cenae/zh-Hans': [0],
+  'dominicae-cenae/zh-Hant': [0],
+  'holy-thursday-1983/en': [2, 3],
+  'holy-thursday-1985/en': [1, 2, 3],
+  'holy-thursday-1986/en': [2],
+  'holy-thursday-1987/en': [1, 2, 3],
+  'holy-thursday-1989/en': [0, 1, 2],
+  'holy-thursday-1998/de': [0],
+  'holy-thursday-2000/fr': [0],
+  'prayer-for-priests-1982/en': [1, 2, 3],
+};
+
+const letterMastheads = {
+  en: /^(?:letter\b|holy thursday letter\b|the pope's letter\b).*priest/,
+  es: /^carta\b.*sacerdotes/,
+  it: /^lettera\b.*sacerdoti/,
+  fr: /^lettre\b.*pretres/,
+  de: /^(?:schreiben|brief)\b.*priester/,
+  nl: /^brief\b.*priesters/,
+  pl: /^list(?:al)?\b.*kaplan/,
+  ru: /^(?:письмо|послание).*священник/,
+  uk: /^(?:лист|послання).*священник/,
+  ar: /^رسالة.*الكهنة/,
+  'zh-Hant': /^(?:[0-9年聖週四]*|(?:教宗)?聖?若望保祿二世).*致.*(?:司鐸|神父).*信/,
+  'zh-Hans': /^(?:[0-9年圣周四]*|(?:教宗)?圣?若望保禄二世).*致.*(?:司铎|神父).*(?:信|函)/,
+};
+
+function repeatedTitle(doc, locale, part, index) {
+  if (index > 3) return false;
+  const value = fold(part.text, locale).replaceAll('·', '').replace(/^[«「『“"]|[»」』”"]$/gu, '');
+  if (splitTitles[doc.id + '/' + locale]?.includes(index)) return true;
+  if (value === fold(displayTitle(doc, locale), locale)) return true;
+  if (/^(?:giovanni paolo|juan pablo|jean[- ]paul|john paul|johannes paul|jan pawel|ioanna? paulus) ii\.?$|^(?:іван пав(?:ло|іл) (?:іі|ii)|иоанн павел ii|يوحنا بولس الثاني|若望保[祿禄]二世)$/u.test(value)) return true;
+  if (doc.kind === 'priests-letter' || doc.kind === 'priests-prayer') {
+    return value.length < 250 && letterMastheads[locale]?.test(value);
+  }
+  if (doc.kind === 'post-synodal-apostolic-exhortation') {
+    return index === 0 && /pastores dabo vobis|我要给你们牧者|我要給你們牧者|我將賜予你們牧人|ساعطيكم رعاة/u.test(value);
+  }
+  if (doc.kind === 'bishops-letter') {
+    return (value.includes(fold(doc.title, locale)) && value.length < 400)
+      || /^(?:lettera apostolica|apostolic letter|lettre apostolique|carta apostolica|apostolisches schreiben|apostolische brief|list apostolski|апостольское послание|апостольський лист|رسالة رسولية|宗座牧函|宗座书函)$/u.test(value);
+  }
+  return false;
+}
+
 function snippet(text, needle, locale) {
   if (text.length <= 240) return text;
   const index = Math.max(0, fold(text, locale).indexOf(needle));
@@ -107,19 +218,20 @@ function localeIndex(locale) {
     const text = texts[doc.id + '/' + locale];
     if (!text) return [];
     const title = displayTitle(doc, locale);
-    return [{doc, text:title, search:fold(title, locale)}, ...text.passages.map((part, p) =>
-      ({doc, p, text:part.text, search:fold(part.text, locale)}))];
+    return [{doc, text:title, search:fold(title, locale)}, ...text.passages.flatMap((part, p) =>
+      repeatedTitle(doc, locale, part, p) ? [] : [{doc, p, text:part.text, search:fold(part.text, locale)}])];
   });
   return index;
 }
 
 function row(doc, locale, detail, passage) {
-  const article = element('article', '', 'entry' + (doc.kind === 'priests-letter' ? '' : ' featured'));
+  const article = element('article', '', 'entry' + (doc.kind === 'post-synodal-apostolic-exhortation' ? ' featured' : ''));
   const heading = element('h3', '');
   heading.append(link(displayTitle(doc, locale), route(doc.id, locale, passage)));
   setTitleLanguage(heading, locale);
   const body = element('div', '');
-  body.append(heading, detail);
+  body.append(heading);
+  if (detail) body.append(detail);
   article.append(element('span', doc.year, 'year'), body);
   return article;
 }
@@ -162,7 +274,7 @@ function readingNotes(text, locale) {
     render(block, part) {
       const notes = lookup[part.noteGroup === undefined ? 0 : part.noteGroup];
       if (!notes) return;
-      const markers = /\[(\p{Nd}+)\]|[（(](\p{Nd}+)[）)]|(?<=[\p{L}\p{P}])([*])/gu;
+      const markers = /[\[［〔]\s*(\p{Nd}+)\s*[\]］〕]|[（(]\s*(\p{Nd}+)\s*[）)]|(?<=[\p{L}\p{P}])([*])/gu;
       let offset = 0;
       for (const marker of part.text.matchAll(markers)) {
         const number = (marker[1] ?? marker[2] ?? marker[3]).normalize('NFKC')
@@ -208,24 +320,37 @@ function renderLibrary() {
     return;
   }
   status.textContent = available + ' of ' + catalog.entries.length + ' editions readable in ' + names[locale];
-  const ordered = [...catalog.entries].sort((a,b) => Number(a.kind === 'priests-letter') - Number(b.kind === 'priests-letter') || a.year - b.year);
+  const ordered = [...catalog.entries].sort((a,b) =>
+    Number(b.kind === 'post-synodal-apostolic-exhortation') - Number(a.kind === 'post-synodal-apostolic-exhortation') || a.year - b.year);
   results.replaceChildren(...ordered.map(doc => {
+    if (texts[doc.id + '/' + locale]) return row(doc, locale);
     const edition = doc.editions.find(item => item.locale === locale);
-    const info = texts[doc.id + '/' + locale] ? 'Read in ' + names[locale]
-      : edition ? 'Edition unavailable in the reader' : 'No catalog edition in ' + names[locale];
+    const info = edition ? 'Edition unavailable in the reader' : 'No catalog edition in ' + names[locale];
     return row(doc, locale, element('p', info, 'meta'));
   }));
 }
 
 function renderRoute() {
   const params = new URLSearchParams(location.hash.slice(1));
-  const doc = catalog.entries.find(item => item.id === params.get('doc'));
+  const requestedDoc = params.get('doc');
+  const doc = catalog?.entries.find(item => item.id === requestedDoc);
   const locale = Object.hasOwn(names, params.get('lang')) ? params.get('lang') : select.value;
+  const landing = !requestedDoc && location.hash !== '#library';
+  const library = el('library');
+  const enteringLibrary = library.hidden && !landing && !doc;
+  el('landing').hidden = !landing;
   reader.hidden = !doc;
-  el('library').hidden = Boolean(doc);
+  library.hidden = landing || Boolean(doc);
+
+  if (landing) {
+    previousDocument = null;
+    window.scrollTo(0, 0);
+    return;
+  }
 
   if (!doc) {
-    renderLibrary();
+    if (catalog) renderLibrary();
+    if (enteringLibrary) el('library-title').focus({preventScroll:true});
     if (previousDocument) window.scrollTo(0, position.get(previousDocument) ?? 0);
     previousDocument = null;
     return;
@@ -233,7 +358,7 @@ function renderRoute() {
   if (!previousDocument) position.set(doc.id, window.scrollY);
   previousDocument = doc.id;
   select.value = locale;
-  const back = link('Back to collection', '#');
+  const back = link('Back to collection', '#library');
   const head = element('div', '', 'reader-head');
   const title = element('h1', displayTitle(doc, locale));
   setTitleLanguage(title, locale);
@@ -262,10 +387,14 @@ function renderRoute() {
       reader.append(notice);
     }
     const notes = readingNotes(text, locale);
+    if (text.passages[0]?.text.endsWith('*') && repeatedTitle(doc, locale, text.passages[0], 0)) {
+      notes.render(title, {text: title.textContent + '*'});
+    }
     const body = element('article', '', 'reader-body');
     body.lang = locale;
     body.dir = 'auto';
     text.passages.forEach((part, i) => {
+      if (repeatedTitle(doc, locale, part, i)) return;
       const block = element(part.heading ? 'h2' : 'p', part.text);
       block.id = 'passage-' + i;
       notes.render(block, part);
@@ -295,6 +424,9 @@ async function load(path) {
   return response.json();
 }
 
+addEventListener('hashchange', renderRoute);
+renderRoute();
+
 try {
   [catalog, texts] = await Promise.all([load('./sacerdos-source-catalog.json'), load('./editions.json')]);
   select.replaceChildren(...catalog.targetContentLocales.map(locale => new Option(names[locale], locale)));
@@ -307,7 +439,6 @@ try {
     renderLibrary();
   });
   query.addEventListener('input', renderLibrary);
-  addEventListener('hashchange', renderRoute);
   renderRoute();
 } catch (error) {
   status.textContent = 'The collection could not be loaded. Reload to try again.';

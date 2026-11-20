@@ -74,6 +74,120 @@
       ]
     },
     {
+      "id": "dominicae-cenae",
+      "year": 1980,
+      "kind": "bishops-letter",
+      "title": "Dominicae Cenae",
+      "editions": [
+        {
+          "locale": "en",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/en/letters/1980/documents/hf_jp-ii_let_19800224_dominicae-cenae.html"
+        },
+        {
+          "locale": "es",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/es/letters/1980/documents/hf_jp-ii_let_19800224_dominicae-cenae.html"
+        },
+        {
+          "locale": "fr",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/fr/letters/1980/documents/hf_jp-ii_let_19800224_dominicae-cenae.html"
+        },
+        {
+          "locale": "it",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/it/letters/1980/documents/hf_jp-ii_let_19800224_dominicae-cenae.html"
+        },
+        {
+          "locale": "la",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/la/letters/1980/documents/hf_jp-ii_let_19800224_dominicae-cenae.html"
+        },
+        {
+          "locale": "pt",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/pt/letters/1980/documents/hf_jp-ii_let_19800224_dominicae-cenae.html"
+        }
+      ]
+    },
+    {
+      "id": "a-concilio-constantinopolitano-i",
+      "year": 1981,
+      "kind": "bishops-letter",
+      "title": "A Concilio Constantinopolitano I",
+      "editions": [
+        {
+          "locale": "de",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/de/apost_letters/1981/documents/hf_jp-ii_apl_25031981_a-concilio-constantinopolitano-i.html"
+        },
+        {
+          "locale": "en",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/en/apost_letters/1981/documents/hf_jp-ii_apl_25031981_a-concilio-constantinopolitano-i.html"
+        },
+        {
+          "locale": "es",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/es/apost_letters/1981/documents/hf_jp-ii_apl_25031981_a-concilio-constantinopolitano-i.html"
+        },
+        {
+          "locale": "fr",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/fr/apost_letters/1981/documents/hf_jp-ii_apl_25031981_a-concilio-constantinopolitano-i.html"
+        },
+        {
+          "locale": "it",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/it/apost_letters/1981/documents/hf_jp-ii_apl_25031981_a-concilio-constantinopolitano-i.html"
+        },
+        {
+          "locale": "pt",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/pt/apost_letters/1981/documents/hf_jp-ii_apl_25031981_a-concilio-constantinopolitano-i.html"
+        },
+        {
+          "locale": "la",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/la/letters/1981/documents/hf_jp-ii_let_19810325_conc-constantinopolitano.html"
+        }
+      ]
+    },
+    {
+      "id": "prayer-for-priests-1982",
+      "year": 1982,
+      "kind": "priests-prayer",
+      "title": "Prayer for Priests on Holy Thursday 1982",
+      "editions": [
+        {
+          "locale": "en",
+          "format": "html",
+          "url": "https://www.clerus.org/clerus/dati/2000-10/10-999999/l82.html"
+        },
+        {
+          "locale": "es",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/es/letters/1982/documents/hf_jp-ii_let_19820325_sacerdoti-giovedi-santo.html"
+        },
+        {
+          "locale": "fr",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/fr/letters/1982/documents/hf_jp-ii_let_19820325_sacerdoti-giovedi-santo.html"
+        },
+        {
+          "locale": "it",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/it/letters/1982/documents/hf_jp-ii_let_25031982_priests.html"
+        },
+        {
+          "locale": "pt",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/pt/letters/1982/documents/hf_jp-ii_let_19820325_sacerdoti-giovedi-santo.html"
+        }
+      ]
+    },
+    {
       "id": "holy-thursday-1983",
       "year": 1983,
       "kind": "priests-letter",

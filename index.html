@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#172b28">
-<meta name="description" content="Read and search the Holy Thursday letters and Pastores Dabo Vobis by Saint John Paul II.">
+<meta name="description" content="Read and search Holy Thursday Letters and Pastores Dabo Vobis by Saint John Paul II.">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
@@ -15,11 +15,17 @@
 <body>
 <header><div class="frame masthead"><a class="brand" href="#"><img src="./icon-192.png" width="38" height="38" alt="">SACERDOS</a><button id="install" hidden>Install app</button><span id="offline" hidden>Offline</span></div></header>
 <main class="frame">
-<section id="library">
+<section id="landing" aria-labelledby="landing-title">
+  <img class="landing-mark" src="./icon-192.png" alt="" width="72" height="72">
+  <h1 id="landing-title">SACERDOS</h1>
+  <p>Holy Thursday Letters and <em>Pastores Dabo Vobis</em> by Saint John Paul II.</p>
+  <a class="landing-action" href="#library">Open library</a>
+</section>
+<section id="library" hidden>
   <div class="hero">
     <p class="eyebrow">Saint John Paul II</p>
-    <h1>On the priesthood</h1>
-    <p>The Holy Thursday letters to priests and <em>Pastores Dabo Vobis</em>.</p>
+    <h1 id="library-title" tabindex="-1">Holy Thursday Letters</h1>
+    <p>Includes <em>Pastores Dabo Vobis</em>.</p>
   </div>
   <div class="controls">
     <label>Search the collection<input id="query" type="search" placeholder="Search for a word or phrase" autocomplete="off" dir="auto"></label>
