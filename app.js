@@ -173,15 +173,11 @@ const splitTitles = {
   'a-concilio-constantinopolitano-i/pl': [0, 1, 2],
   'a-concilio-constantinopolitano-i/ru': [0, 1, 2],
   'a-concilio-constantinopolitano-i/uk': [0, 1, 2],
-  'a-concilio-constantinopolitano-i/zh-Hans': [0, 1, 2],
-  'a-concilio-constantinopolitano-i/zh-Hant': [0, 1, 2],
   'dominicae-cenae/ar': [0],
   'dominicae-cenae/de': [0],
   'dominicae-cenae/nl': [0],
   'dominicae-cenae/pl': [0],
   'dominicae-cenae/ru': [0],
-  'dominicae-cenae/zh-Hans': [0],
-  'dominicae-cenae/zh-Hant': [0],
   'holy-thursday-1983/en': [2, 3],
   'holy-thursday-1985/en': [1, 2, 3],
   'holy-thursday-1986/en': [2],
@@ -422,10 +418,9 @@ function renderRoute() {
   const text = texts[doc.id + '/' + locale];
   if (text) {
     if (text.translation?.type === 'ai-generated') {
-      const [disclaimer, label] = translationNotices[locale];
-      const notice = element('p', disclaimer + ' ', 'notice');
+      const [disclaimer] = translationNotices[locale];
+      const notice = element('p', disclaimer, 'notice');
       setTitleLanguage(notice, locale);
-      notice.append(link(label, text.source));
       reader.append(notice);
     } else if (text.translation?.type === 'published' || text.translation?.type === 'script-conversion') {
       const hans = locale === 'zh-Hans';
@@ -433,9 +428,8 @@ function renderRoute() {
       if (text.translation.type === 'script-conversion') {
         lines.push(hans ? '此简体文本由繁体原文转换字形而成，译文内容未经改动。' : '此繁體文本由簡體原文轉換字形而成，譯文內容未經改動。');
       }
-      const notice = element('p', lines.join(' ') + ' ', 'notice');
+      const notice = element('p', lines.join(' '), 'notice');
       setTitleLanguage(notice, locale);
-      notice.append(link(hans ? '阅读来源文本' : '閱讀來源文本', text.source));
       reader.append(notice);
     }
     const notes = readingNotes(text, locale);
