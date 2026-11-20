@@ -308,10 +308,16 @@ function renderLibrary() {
     return;
   }
   status.textContent = s.readable(readable, catalog.entries.length);
-  const rank = d => d.kind === 'post-synodal-apostolic-exhortation' ? 0 : 1;
-  const ordered = [...catalog.entries].sort((a, b) => rank(a) - rank(b) || a.year - b.year);
-  results.replaceChildren(...ordered.map(doc =>
-    hasText(doc.id, locale) ? row(doc, locale) : row(doc, locale, element('p', s.notInLanguage, 'meta'))));
+  const major = d => d.kind === 'post-synodal-apostolic-exhortation' || d.kind === 'encyclical';
+  const entry = doc => hasText(doc.id, locale) ? row(doc, locale) : row(doc, locale, element('p', s.notInLanguage, 'meta'));
+  const group = (title, docs) => {
+    const head = element('h3', title, 'group-title');
+    setLang(head, locale);
+    return [head, ...docs.sort((a, b) => a.year - b.year).map(entry)];
+  };
+  results.replaceChildren(
+    ...group(s.groupMajor, catalog.entries.filter(major)),
+    ...group(s.groupLetters, catalog.entries.filter(d => !major(d))));
 }
 
 // ---------------------------------------------------------------- footnotes

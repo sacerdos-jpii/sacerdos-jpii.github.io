@@ -123,3 +123,8 @@ button:disabled{opacity:.45;cursor:default}
 .note-card.hl blockquote{background:var(--hl)}
 .note-card .para-note{margin:.4rem 0 0;cursor:default}
 @media(max-width:36rem){.reader-body{padding-inline-start:1.9rem}.secno{inset-inline-start:-1.95rem;width:1.7rem}.reader-body .bm::after{inset-inline-start:-2.2rem}}
+/* no underlines on links */
+a,a:hover,a:focus,.entry a,.masthead-link:hover,.secno:hover,#reader sup button{text-decoration:none}
+.group-title{font:600 .875rem system-ui,sans-serif;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin:2rem 0 .4rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+.group-title:first-child{margin-top:.5rem}
+:lang(zh) .group-title,.group-title:lang(zh-Hant),.group-title:lang(zh-Hans){letter-spacing:.3em}
