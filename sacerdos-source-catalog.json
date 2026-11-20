@@ -928,6 +928,69 @@
       ]
     },
     {
+      "id": "ecclesia-de-eucharistia",
+      "year": 2003,
+      "kind": "encyclical",
+      "title": "Ecclesia de Eucharistia",
+      "editions": [
+        {
+          "locale": "de",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/de/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "en",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/en/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "es",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/es/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "fr",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/fr/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "it",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/it/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "pl",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/pl/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "zh-Hans",
+          "format": "pdf",
+          "url": "https://www.vatican.va/content/dam/john-paul-ii/pdf/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch_zh.pdf"
+        },
+        {
+          "locale": "hu",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/hu/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "la",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/la/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "pt",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/pt/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        },
+        {
+          "locale": "hr",
+          "format": "html",
+          "url": "https://www.vatican.va/content/john-paul-ii/hr/encyclicals/documents/hf_jp-ii_enc_20030417_eccl-de-euch.html"
+        }
+      ]
+    },
+    {
       "id": "holy-thursday-2004",
       "year": 2004,
       "kind": "priests-letter",

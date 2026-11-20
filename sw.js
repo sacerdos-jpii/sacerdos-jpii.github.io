@@ -1,7 +1,7 @@
 const prefix = 'sacerdos-';
-const cacheName = prefix + 'v11';
+const cacheName = prefix + 'v12';
 const dataCache = prefix + 'data';
-const files = ['./index.html', './style.css', './app.js', './manifest.webmanifest',
+const files = ['./index.html', './style.css', './app.js', './i18n.js', './zhmap.js', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './sacerdos-source-catalog.json', './editions/index.json'];
 
 self.addEventListener('install', event => {
@@ -12,7 +12,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key =>
-    key.startsWith(prefix) && key !== cacheName && key !== dataCache
+    key.startsWith(prefix) && key !== cacheName && key !== dataCache && key !== fontCache
   ).map(key => caches.delete(key)))).then(() => self.clients.claim()));
 });
 
@@ -34,9 +34,17 @@ function staleWhileRevalidate(request) {
   }));
 }
 
+const fontCache = prefix + 'fonts';
 self.addEventListener('fetch', event => {
   const request = event.request;
-  if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    event.respondWith(caches.open(fontCache).then(cache => cache.match(request).then(hit => hit ||
+      fetch(request).then(response => { cache.put(request, response.clone()); return response; }))));
+    return;
+  }
+  if (url.origin !== self.location.origin) return;
   if (request.mode === 'navigate' && request.url.startsWith(self.registration.scope)) {
     event.respondWith(caches.open(cacheName).then(cache => cache.match('./index.html')).then(
       response => response || fetch(request)

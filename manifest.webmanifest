@@ -2,14 +2,24 @@
   "id": "./",
   "name": "SACERDOS",
   "short_name": "SACERDOS",
-  "description": "Holy Thursday Letters and Pastores Dabo Vobis by Saint John Paul II.",
+  "description": "Saint John Paul II: Letters to Priests for Holy Thursday, Pastores Dabo Vobis and Ecclesia de Eucharistia.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "theme_color": "#172b28",
   "background_color": "#f5f2e9",
   "icons": [
-    {"src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any"},
-    {"src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable"}
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
   ]
 }

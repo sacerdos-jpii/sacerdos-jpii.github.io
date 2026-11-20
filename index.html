@@ -4,38 +4,74 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#172b28">
-<meta name="description" content="Read and search Holy Thursday Letters and Pastores Dabo Vobis by Saint John Paul II.">
+<meta name="description" content="Saint John Paul II: Letters to Priests for Holy Thursday, Pastores Dabo Vobis and Ecclesia de Eucharistia.">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
 <link rel="stylesheet" href="./style.css">
 <title>SACERDOS</title>
+<script>
+try {
+  const s = JSON.parse(localStorage.getItem('sacerdos-settings') || '{}');
+  if (s.theme) document.documentElement.dataset.theme = s.theme;
+  if (s.size) document.documentElement.style.setProperty('--reader-size', s.size + 'rem');
+} catch {}
+</script>
 <script type="module" src="./app.js"></script>
 </head>
 <body>
-<header><div class="frame masthead"><a class="brand" href="#"><img src="./icon-192.png" width="38" height="38" alt="">SACERDOS</a><button id="install" hidden>Install app</button><span id="offline" hidden>Offline</span></div></header>
+<header><div class="frame masthead">
+  <a class="brand" href="#"><img src="./icon-192.png" width="38" height="38" alt="">SACERDOS</a>
+  <span id="offline" hidden></span>
+  <button id="install" hidden></button>
+  <a id="notes-link" class="masthead-link" href="#notes"></a>
+  <button id="display-btn" class="masthead-btn" aria-haspopup="dialog">Aa</button>
+</div></header>
 <main class="frame">
 <section id="landing" aria-labelledby="landing-title">
   <img class="landing-mark" src="./icon-192.png" alt="" width="72" height="72">
   <h1 id="landing-title">SACERDOS</h1>
-  <p>Holy Thursday Letters and <em>Pastores Dabo Vobis</em> by Saint John Paul II.</p>
-  <a class="landing-action" href="#library">Open library</a>
+  <p id="landing-tagline"></p>
+  <a id="open-library" class="landing-action" href="#library"></a>
 </section>
 <section id="library" hidden>
   <div class="hero">
-    <p class="eyebrow">Saint John Paul II</p>
-    <h1 id="library-title" tabindex="-1">Holy Thursday Letters</h1>
-    <p>Includes <em>Pastores Dabo Vobis</em>.</p>
+    <p class="eyebrow" id="library-eyebrow"></p>
+    <h1 id="library-title" tabindex="-1"></h1>
+    <p id="library-sub"></p>
   </div>
   <div class="controls">
-    <label>Search the collection<input id="query" type="search" placeholder="Search for a word or phrase" autocomplete="off" dir="auto"></label>
-    <label>Reading language<select id="locale"></select></label>
+    <label><span id="search-label"></span><input id="query" type="search" autocomplete="off" dir="auto"></label>
+    <label><span id="language-label"></span><select id="locale"></select></label>
   </div>
-  <div class="section-head"><h2 id="view-title">Collection</h2><p id="status" role="status">Loading collection…</p></div>
+  <div id="continue"></div>
+  <div class="section-head"><h2 id="view-title"></h2><p id="status" role="status"></p></div>
   <div id="results"></div>
 </section>
 <section id="reader" hidden></section>
+<section id="notes" hidden></section>
 </main>
-<footer class="frame">SACERDOS <span>Saint John Paul II</span></footer>
+<footer class="frame">SACERDOS <span id="footer-saint"></span></footer>
+<dialog id="display-dialog" class="sheet">
+  <h2 id="display-title"></h2>
+  <fieldset><legend id="theme-label"></legend><div class="seg" id="theme-options"></div></fieldset>
+  <fieldset><legend id="size-label"></legend><div class="seg"><button id="size-down" type="button">A−</button><output id="size-value"></output><button id="size-up" type="button">A+</button></div></fieldset>
+  <p class="sheet-actions"><button id="display-close" type="button"></button></p>
+</dialog>
+<dialog id="actions-dialog" class="sheet">
+  <p id="actions-cite" class="meta"></p>
+  <div class="action-list">
+    <button id="act-copy" type="button"></button>
+    <button id="act-bookmark" type="button"></button>
+    <button id="act-highlight" type="button"></button>
+    <button id="act-note" type="button"></button>
+  </div>
+  <p class="sheet-actions"><button id="actions-close" type="button"></button></p>
+</dialog>
+<dialog id="note-editor" class="sheet">
+  <label><span id="note-editor-label"></span><textarea id="note-text" rows="6" dir="auto"></textarea></label>
+  <p class="sheet-actions"><button id="note-delete" type="button"></button><button id="note-cancel" type="button"></button><button id="note-save" type="button" class="primary"></button></p>
+</dialog>
+<div id="toast" role="status" hidden></div>
 </body>
 </html>
