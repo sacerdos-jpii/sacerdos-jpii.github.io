@@ -16,7 +16,7 @@ const letterTitles = {
 const exhortationSubtitles = {
   es:'La formación de los sacerdotes', it:'La formazione dei sacerdoti',
   de:'Die Priesterausbildung', nl:'De vorming van priesters',
-  'zh-Hant':'我要給你們牧者|我將賜予你們牧人', 'zh-Hans':'我要给你们牧者',
+  'zh-Hant':'我要給你們牧者', 'zh-Hans':'我要给你们牧者',
   uk:'Формація священників', ru:'Подготовка священников', ar:'تنشئة الكهنة',
   fr:'La formation des prêtres', pl:'Formacja kapłanów',
 };
@@ -45,8 +45,14 @@ const results = el('results');
 const reader = el('reader');
 const status = el('status');
 const position = new Map();
+const sectionLabels = {
+  en:'Section', es:'Número', it:'Numero', de:'Abschnitt', nl:'Paragraaf', 'zh-Hant':'節', 'zh-Hans':'节',
+  uk:'Розділ', ru:'Раздел', ar:'الفقرة', fr:'Numéro', pl:'Punkt',
+};
 let catalog;
-let texts;
+let texts = {};
+let available = {};
+const loadedLocales = new Map();
 let previousDocument;
 let index = [];
 let indexedLocale;
@@ -130,10 +136,27 @@ function setTitleLanguage(node, locale) {
   node.dir = locale === 'ar' ? 'rtl' : 'auto';
 }
 
-function route(id, locale, passage) {
+function route(id, locale, passage, section) {
   const params = new URLSearchParams({doc:id, lang:locale});
-  if (passage !== undefined) params.set('p', passage);
+  if (section !== undefined) params.set('s', section);
+  else if (passage !== undefined) params.set('p', passage);
   return '#' + params;
+}
+
+function hasText(id, locale) {
+  return available[locale]?.includes(id) ?? false;
+}
+
+function ensureLocale(locale) {
+  if (!loadedLocales.has(locale)) {
+    loadedLocales.set(locale, load('./editions/' + locale + '.json').then(data => {
+      Object.assign(texts, data);
+    }).catch(error => {
+      loadedLocales.delete(locale);
+      throw error;
+    }));
+  }
+  return loadedLocales.get(locale);
 }
 
 function fold(text, locale) {
@@ -302,10 +325,20 @@ function readingNotes(text, locale) {
 
 function renderLibrary() {
   const locale = select.value;
-  const available = catalog.entries.filter(doc => texts[doc.id + '/' + locale]).length;
+  const readable = catalog.entries.filter(doc => hasText(doc.id, locale)).length;
   const needle = fold(query.value, locale);
   el('view-title').textContent = needle ? 'Search results' : 'Collection';
+  if (needle && readable && !Object.keys(texts).some(key => key.endsWith('/' + locale))) {
+    status.textContent = 'Loading ' + names[locale] + '…';
+    ensureLocale(locale).then(() => {
+      if (select.value === locale) renderLibrary();
+    }, () => {
+      status.textContent = names[locale] + ' is not available offline yet. Connect once to download it.';
+    });
+    return;
+  }
   if (needle) {
+    const available = readable;
     const matches = localeIndex(locale).filter(item => item.search.includes(needle));
     status.textContent = available ? matches.length + ' matches across ' + available + ' searchable editions' : 'No indexed editions in ' + names[locale];
     const cards = matches.slice(0, 150).map(({doc, p, text}) => {
@@ -319,11 +352,11 @@ function renderLibrary() {
     results.replaceChildren(...cards);
     return;
   }
-  status.textContent = available + ' of ' + catalog.entries.length + ' editions readable in ' + names[locale];
+  status.textContent = readable + ' of ' + catalog.entries.length + ' editions readable in ' + names[locale];
   const ordered = [...catalog.entries].sort((a,b) =>
     Number(b.kind === 'post-synodal-apostolic-exhortation') - Number(a.kind === 'post-synodal-apostolic-exhortation') || a.year - b.year);
   results.replaceChildren(...ordered.map(doc => {
-    if (texts[doc.id + '/' + locale]) return row(doc, locale);
+    if (hasText(doc.id, locale)) return row(doc, locale);
     const edition = doc.editions.find(item => item.locale === locale);
     const info = edition ? 'Edition unavailable in the reader' : 'No catalog edition in ' + names[locale];
     return row(doc, locale, element('p', info, 'meta'));
@@ -355,6 +388,14 @@ function renderRoute() {
     previousDocument = null;
     return;
   }
+  if (hasText(doc.id, locale) && !texts[doc.id + '/' + locale]) {
+    reader.replaceChildren(element('p', 'Loading ' + names[locale] + '…', 'notice'));
+    ensureLocale(locale).then(renderRoute, () => {
+      reader.replaceChildren(link('Back to collection', '#library'),
+        element('p', names[locale] + ' is not available offline yet. Connect once to download it.', 'notice'));
+    });
+    return;
+  }
   if (!previousDocument) position.set(doc.id, window.scrollY);
   previousDocument = doc.id;
   select.value = locale;
@@ -370,11 +411,12 @@ function renderRoute() {
   reader.replaceChildren(back, head);
 
   const other = catalog.targetContentLocales.filter(language => language !== locale &&
-    (texts[doc.id + '/' + language] || doc.editions.some(item => item.locale === language)));
+    (hasText(doc.id, language) || doc.editions.some(item => item.locale === language)));
   if (other.length) {
     const options = element('div', '', 'sources');
     options.setAttribute('aria-label', 'Other editions');
-    for (const language of other) options.append(link(names[language], route(doc.id, language)));
+    const currentSection = params.get('s') ?? undefined;
+    for (const language of other) options.append(link(names[language], route(doc.id, language, undefined, currentSection)));
     head.append(options);
   }
   const text = texts[doc.id + '/' + locale];
@@ -385,6 +427,16 @@ function renderRoute() {
       setTitleLanguage(notice, locale);
       notice.append(link(label, text.source));
       reader.append(notice);
+    } else if (text.translation?.type === 'published' || text.translation?.type === 'script-conversion') {
+      const hans = locale === 'zh-Hans';
+      const lines = [(hans ? '译本：' : '譯本：') + text.translation.credit];
+      if (text.translation.type === 'script-conversion') {
+        lines.push(hans ? '此简体文本由繁体原文转换字形而成，译文内容未经改动。' : '此繁體文本由簡體原文轉換字形而成，譯文內容未經改動。');
+      }
+      const notice = element('p', lines.join(' ') + ' ', 'notice');
+      setTitleLanguage(notice, locale);
+      notice.append(link(hans ? '阅读来源文本' : '閱讀來源文本', text.source));
+      reader.append(notice);
     }
     const notes = readingNotes(text, locale);
     if (text.passages[0]?.text.endsWith('*') && repeatedTitle(doc, locale, text.passages[0], 0)) {
@@ -393,16 +445,34 @@ function renderRoute() {
     const body = element('article', '', 'reader-body');
     body.lang = locale;
     body.dir = 'auto';
+    const sections = [];
     text.passages.forEach((part, i) => {
       if (repeatedTitle(doc, locale, part, i)) return;
       const block = element(part.heading ? 'h2' : 'p', part.text);
       block.id = 'passage-' + i;
+      if (part.n !== undefined) {
+        block.dataset.section = part.n;
+        sections.push([part.n, i]);
+      }
       notes.render(block, part);
       body.append(block);
     });
+    if (sections.length) {
+      const jump = element('select', '');
+      jump.setAttribute('aria-label', sectionLabels[locale] ?? 'Section');
+      jump.append(new Option((sectionLabels[locale] ?? 'Section') + ' …', ''));
+      for (const [n] of sections) jump.append(new Option('§ ' + n, n));
+      jump.onchange = () => {
+        if (jump.value) location.hash = route(doc.id, locale, undefined, jump.value);
+      };
+      const bar = element('div', '', 'section-jump');
+      bar.append(jump);
+      head.append(bar);
+    }
     reader.append(body);
     notes.appendTo(reader);
-    const target = document.getElementById('passage-' + params.get('p'));
+    const sectionStart = sections.find(([n]) => String(n) === params.get('s'));
+    const target = document.getElementById('passage-' + (sectionStart ? sectionStart[1] : params.get('p')));
     if (target) {
       target.classList.add('match');
       target.tabIndex = -1;
@@ -428,7 +498,7 @@ addEventListener('hashchange', renderRoute);
 renderRoute();
 
 try {
-  [catalog, texts] = await Promise.all([load('./sacerdos-source-catalog.json'), load('./editions.json')]);
+  [catalog, available] = await Promise.all([load('./sacerdos-source-catalog.json'), load('./editions/index.json')]);
   select.replaceChildren(...catalog.targetContentLocales.map(locale => new Option(names[locale], locale)));
   try {
     const stored = localStorage.getItem('sacerdos-language');

@@ -61,3 +61,4 @@ body:has(#landing:not([hidden])) footer { display: none; }
 @media (prefers-reduced-motion: reduce) {
   #landing-title { animation: none; }
 }
+.reader-body p{white-space:pre-line}.section-jump{margin-top:1rem;max-width:12rem}.section-jump select{min-height:2.5rem;padding:.45rem .7rem}
