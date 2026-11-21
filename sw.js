@@ -1,8 +1,8 @@
 const prefix = 'sacerdos-';
-const cacheName = prefix + 'v15';
+const cacheName = prefix + 'v17';
 const dataCache = prefix + 'data';
 const files = ['./index.html', './style.css', './app.js', './i18n.js', './zhmap.js', './manifest.webmanifest',
-  './icon-192.png', './icon-512.png', './sacerdos-source-catalog.json', './editions/index.json'];
+  './icon-192.png', './icon-512.png', './landing-face.jpg', './sacerdos-source-catalog.json', './editions/index.json'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(

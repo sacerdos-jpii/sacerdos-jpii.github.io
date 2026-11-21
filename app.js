@@ -1,4 +1,4 @@
-import {LOCALES, names, t, displayTitle, citation, quoteWithCitation} from './i18n.js';
+import {LOCALES, names, t, displayTitle, themeTitle, citation, quoteWithCitation} from './i18n.js';
 import zhmap from './zhmap.js';
 
 const el = id => document.getElementById(id);
@@ -251,7 +251,9 @@ function localeIndex(locale) {
     const text = texts[doc.id + '/' + locale];
     if (!text) return [];
     const title = displayTitle(doc, locale);
-    return [{doc, text:title, search:fold(title, locale)}, ...text.passages.flatMap((part, p) =>
+    const theme = themeTitle(doc, locale);
+    const heads = theme ? title + ' ' + theme : title;
+    return [{doc, text:theme ?? title, search:fold(heads, locale)}, ...text.passages.flatMap((part, p) =>
       repeatedTitle(doc, locale, part, p) ? [] : [{doc, p, text:part.text, search:fold(part.text, locale)}])];
   });
   return index;
@@ -259,11 +261,17 @@ function localeIndex(locale) {
 function row(doc, locale, detail, passage) {
   const featured = doc.kind === 'post-synodal-apostolic-exhortation' || doc.kind === 'encyclical';
   const article = element('article', '', 'entry' + (featured ? ' featured' : ''));
+  const theme = themeTitle(doc, locale);
   const heading = element('h3', '');
-  heading.append(link(displayTitle(doc, locale), route(doc.id, locale, passage)));
+  heading.append(link(theme ?? displayTitle(doc, locale), route(doc.id, locale, passage)));
   setLang(heading, locale);
   const body = element('div', '');
   body.append(heading);
+  if (theme) {
+    const formal = element('p', displayTitle(doc, locale), 'formal-title');
+    setLang(formal, locale);
+    body.append(formal);
+  }
   if (detail) body.append(detail);
   article.append(element('span', doc.year, 'year'), body);
   return article;
@@ -642,9 +650,15 @@ function renderRoute() {
   previousDocument = doc.id;
   const back = link(s.back, '#library');
   const head = element('div', '', 'reader-head');
-  const title = element('h1', displayTitle(doc, locale));
+  const theme = themeTitle(doc, locale);
+  const title = element('h1', theme ?? displayTitle(doc, locale));
   setLang(title, locale);
   head.append(element('p', doc.year + ' · ' + s.saint, 'eyebrow'), title);
+  if (theme) {
+    const formal = element('p', displayTitle(doc, locale), 'formal-title');
+    setLang(formal, locale);
+    head.append(formal);
+  }
   const sources = element('div', '', 'sources');
   const edition = doc.editions.find(item => item.locale === locale);
   if (edition?.format === 'pdf') sources.append(link(s.openPdf, edition.url));
