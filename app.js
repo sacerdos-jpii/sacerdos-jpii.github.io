@@ -84,7 +84,8 @@ function applyChrome(locale) {
   document.documentElement.lang = locale;
   document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
   ensureFont(locale);
-  el('landing-tagline').textContent = s.tagline;
+  el('landing-lang-name').textContent = names[locale];
+  el('landing-locale').setAttribute('aria-label', s.languageLabel);
   el('open-library').textContent = s.open;
   el('library-eyebrow').textContent = s.saint;
   el('library-title').textContent = s.libraryTitle;
@@ -758,12 +759,17 @@ try {
     o.lang = locale;
     return o;
   }));
-  select.value = uiLocale;
-  select.addEventListener('change', () => {
-    writeStore('sacerdos-language', select.value);
-    applyChrome(select.value);
+  const landingSelect = el('landing-locale');
+  landingSelect.replaceChildren(...[...select.options].map(o => { const c = o.cloneNode(true); return c; }));
+  select.value = landingSelect.value = uiLocale;
+  const chooseLanguage = value => {
+    select.value = landingSelect.value = value;
+    writeStore('sacerdos-language', value);
+    applyChrome(value);
     renderLibrary();
-  });
+  };
+  select.addEventListener('change', () => chooseLanguage(select.value));
+  landingSelect.addEventListener('change', () => chooseLanguage(landingSelect.value));
   query.addEventListener('input', renderLibrary);
   renderRoute();
 } catch (error) {
