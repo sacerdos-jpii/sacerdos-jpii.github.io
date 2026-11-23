@@ -1,8 +1,8 @@
 // Interface strings, titles and citation forms for every reading language.
-export const LOCALES = ['en', 'es', 'it', 'de', 'nl', 'zh-Hant', 'zh-Hans', 'uk', 'ru', 'ar', 'fr', 'pl'];
+export const LOCALES = ['en', 'es', 'it', 'de', 'nl', 'zh-Hant', 'zh-Hans', 'uk', 'ru', 'ar', 'fr', 'pl', 'pt'];
 
 export const names = {en:'English', es:'Español', it:'Italiano', de:'Deutsch', nl:'Nederlands',
-  'zh-Hant':'繁體中文', 'zh-Hans':'简体中文', uk:'Українська', ru:'Русский', ar:'العربية', fr:'Français', pl:'Polski'};
+  'zh-Hant':'繁體中文', 'zh-Hans':'简体中文', uk:'Українська', ru:'Русский', ar:'العربية', fr:'Français', pl:'Polski', pt:'Português'};
 
 const S = {
   en: {
@@ -259,6 +259,27 @@ const S = {
     smaller:'Mniejszy', larger:'Większy', actions:'Działania dla akapitu', translation:'Przekład',
     aiNotice:'Ten nieoficjalny przekład SACERDOS został wygenerowany z użyciem sztucznej inteligencji i może zawierać błędy.',
   },
+  pt: {
+    saint:'São João Paulo II',
+    tagline:'Cartas aos sacerdotes para a Quinta-feira Santa, Pastores Dabo Vobis e Ecclesia de Eucharistia de São João Paulo II.',
+    open:'Abrir a biblioteca', libraryTitle:'Cartas aos sacerdotes', librarySub:'Cartas de Quinta-feira Santa, Pastores Dabo Vobis e Ecclesia de Eucharistia.',
+    searchLabel:'Pesquisar na coleção', searchPlaceholder:'Pesquisar uma palavra ou expressão', languageLabel:'Idioma',
+    collection:'Coleção', groupMajor:'Exortação e encíclica', groupLetters:'Cartas', results:'Resultados da pesquisa', loading:'A carregar…',
+    loadingLang:n => `A carregar ${n}…`, notOffline:n => `${n} ainda não está disponível offline. Ligue-se uma vez para o descarregar.`,
+    matches:(m, e) => `${m} resultados em ${e} documentos`, noMatches:'Nenhum passo corresponde à pesquisa.',
+    first150:'São mostrados os primeiros 150 resultados. Refine a pesquisa.',
+    readable:(r, t) => `${r} de ${t} documentos disponíveis`, notInLanguage:'Não disponível neste idioma',
+    back:'Voltar à coleção', openPdf:'Abrir o PDF original', otherEditions:'Outros idiomas', section:'Número',
+    noEdition:'Este documento não está disponível neste idioma.', footnotes:'Notas', noteShort:'Nota', close:'Fechar',
+    install:'Instalar', offline:'Offline', continueReading:'Continuar a ler',
+    copy:'Copiar com citação', copied:'Copiado para a área de transferência', bookmark:'Marcador', unbookmark:'Remover marcador',
+    highlight:'Destacar', unhighlight:'Remover destaque', note:'Adicionar nota', editNote:'Editar nota', notePrompt:'Nota',
+    save:'Guardar', remove:'Apagar', cancel:'Cancelar', myNotes:'As minhas notas', exportMd:'Exportar em Markdown',
+    noNotes:'Ainda não há marcadores, destaques nem notas. Mantenha premido um parágrafo (ou clique com o botão direito) para adicionar.',
+    display:'Visualização', theme:'Tema', light:'Claro', sepia:'Sépia', dark:'Escuro', textSize:'Tamanho do texto',
+    smaller:'Mais pequeno', larger:'Maior', actions:'Ações do parágrafo', translation:'Tradução',
+    aiNotice:'Esta tradução não oficial do SACERDOS foi gerada com inteligência artificial e pode conter erros.',
+  },
 };
 
 export function t(locale) {
@@ -279,6 +300,7 @@ const letterTitles = {
   ar: y => `رسالة إلى الكهنة بمناسبة خميس الأسرار سنة ${y}`,
   fr: y => `Lettre aux prêtres pour le Jeudi saint ${y}`,
   pl: y => `List do kapłanów na Wielki Czwartek ${y} roku`,
+  pt: y => `Carta aos sacerdotes para a Quinta-feira Santa de ${y}`,
 };
 const prayerTitles = {
   en:'Prayer for Priests on Holy Thursday 1982',
@@ -287,33 +309,34 @@ const prayerTitles = {
   'zh-Hant':'1982年聖週四為司鐸祈禱', 'zh-Hans':'1982年圣周四为司铎祈祷',
   uk:'Молитва за священників у Великий четвер 1982 року', ru:'Молитва о священниках в Великий четвер 1982 года',
   ar:'صلاة من أجل الكهنة في خميس الأسرار ١٩٨٢', fr:'Prière pour les prêtres le Jeudi saint 1982', pl:'Modlitwa za kapłanów w Wielki Czwartek 1982 roku',
+  pt:'Oração pelos sacerdotes na Quinta-feira Santa de 1982',
 };
 const subtitles = {
   'pastores-dabo-vobis': {
     en:'On the Formation of Priests', es:'La formación de los sacerdotes', it:'La formazione dei sacerdoti',
     de:'Die Priesterausbildung', nl:'De vorming van priesters', uk:'Формація священників', ru:'Подготовка священников',
-    ar:'تنشئة الكهنة', fr:'La formation des prêtres', pl:'Formacja kapłanów',
+    ar:'تنشئة الكهنة', fr:'La formation des prêtres', pl:'Formacja kapłanów', pt:'A formação dos sacerdotes',
   },
   'ecclesia-de-eucharistia': {
     en:'On the Eucharist in its Relationship to the Church', es:'Sobre la Eucaristía en su relación con la Iglesia',
     it:'Sull’Eucaristia nel suo rapporto con la Chiesa', de:'Über die Eucharistie in ihrem Verhältnis zur Kirche',
     nl:'Over de Eucharistie in haar verhouding tot de Kerk', uk:'Про Євхаристію в її відношенні до Церкви',
     ru:'О Евхаристии в её отношении к Церкви', ar:'في الإفخارستيا وعلاقتها بالكنيسة',
-    fr:'Sur l’Eucharistie dans son rapport à l’Église', pl:'O Eucharystii w życiu Kościoła',
+    fr:'Sur l’Eucharistie dans son rapport à l’Église', pl:'O Eucharystii w życiu Kościoła', pt:'Sobre a Eucaristia na sua relação com a Igreja',
   },
   'dominicae-cenae': {
     en:'On the Mystery and Worship of the Eucharist', es:'Sobre el misterio y el culto de la Eucaristía',
     it:'Sul mistero e il culto dell’Eucaristia', de:'Über das Mysterium und den Kult der Eucharistie',
     nl:'Over het mysterie en de verering van de eucharistie', uk:'Про таїнство і культ Євхаристії',
     ru:'О таинстве и почитании Евхаристии', ar:'في سرّ الإفخارستيا وعبادتها',
-    fr:'Sur le mystère et le culte de l’Eucharistie', pl:'O tajemnicy i kulcie Eucharystii',
+    fr:'Sur le mystère et le culte de l’Eucharistie', pl:'O tajemnicy i kulcie Eucharystii', pt:'Sobre o mistério e o culto da Eucaristia',
   },
   'a-concilio-constantinopolitano-i': {
     en:'On the Councils of Constantinople and Ephesus', es:'Sobre los concilios de Constantinopla y Éfeso',
     it:'Sui concili di Costantinopoli e di Efeso', de:'Über die Konzilien von Konstantinopel und Ephesus',
     nl:'Over de concilies van Constantinopel en Efeze', uk:'Про Константинопольський і Ефеський собори',
     ru:'О Константинопольском и Эфесском соборах', ar:'في مجمعَي القسطنطينية وأفسس',
-    fr:'Sur les conciles de Constantinople et d’Éphèse', pl:'O soborach w Konstantynopolu i Efezie',
+    fr:'Sur les conciles de Constantinople et d’Éphèse', pl:'O soborach w Konstantynopolu i Efezie', pt:'Sobre os concílios de Constantinopla e Éfeso',
   },
 };
 // Published Chinese titles (Traditional, Simplified)
@@ -347,12 +370,12 @@ export function displayTitle(doc, locale) {
 const letterShort = {
   en:'Letter to Priests', es:'Carta a los sacerdotes', it:'Lettera ai sacerdoti', de:'Brief an die Priester',
   nl:'Brief aan de priesters', uk:'Лист до священників', ru:'Письмо священникам', ar:'رسالة إلى الكهنة',
-  fr:'Lettre aux prêtres', pl:'List do kapłanów',
+  fr:'Lettre aux prêtres', pl:'List do kapłanów', pt:'Carta aos sacerdotes',
 };
 const prayerShort = {
   en:'Prayer for Priests', es:'Oración por los sacerdotes', it:'Preghiera per i sacerdoti', de:'Gebet für die Priester',
   nl:'Gebed voor de priesters', uk:'Молитва за священників', ru:'Молитва о священниках', ar:'صلاة من أجل الكهنة',
-  fr:'Prière pour les prêtres', pl:'Modlitwa za kapłanów',
+  fr:'Prière pour les prêtres', pl:'Modlitwa za kapłanów', pt:'Oração pelos sacerdotes',
 };
 const zhShort = {
   'pastores-dabo-vobis': ['我要給你們牧者', '我要给你们牧者'],
@@ -363,7 +386,7 @@ const zhShort = {
 };
 const quotes = {
   en:['“', '”'], es:['«', '»'], it:['«', '»'], de:['„', '“'], nl:['‘', '’'], uk:['«', '»'], ru:['«', '»'],
-  ar:['«', '»'], fr:['« ', ' »'], pl:['„', '”'],
+  ar:['«', '»'], fr:['« ', ' »'], pl:['„', '”'], pt:['«', '»'],
 };
 
 export function citation(doc, locale, section) {
@@ -405,7 +428,8 @@ const themes = {
   "ar": "الكاهن عطيّة المسيح للجماعة",
   "fr": "Le prêtre, don du Christ pour la communauté",
   "pl": "Kapłan darem Chrystusa dla wspólnoty",
-  "zh-Hans": "司铎：基督赐给团体的恩典"
+  "zh-Hans": "司铎：基督赐给团体的恩典",
+  "pt": "O sacerdote, dom de Cristo para a comunidade"
  },
  "dominicae-cenae": {
   "en": "The mystery and worship of the Eucharist",
@@ -419,7 +443,8 @@ const themes = {
   "ar": "سرّ الإفخارستيا وعبادتها",
   "fr": "Le mystère et le culte de l’Eucharistie",
   "pl": "Tajemnica i kult Eucharystii",
-  "zh-Hans": "圣体圣事的奥迹和敬礼"
+  "zh-Hans": "圣体圣事的奥迹和敬礼",
+  "pt": "O mistério e o culto da Eucaristia"
  },
  "a-concilio-constantinopolitano-i": {
   "en": "The Holy Spirit and the Mother of God",
@@ -433,7 +458,8 @@ const themes = {
   "ar": "الروح القدس ووالدة الإله",
   "fr": "L’Esprit Saint et la Mère de Dieu",
   "pl": "Duch Święty i Matka Boża",
-  "zh-Hans": "圣神与天主之母"
+  "zh-Hans": "圣神与天主之母",
+  "pt": "O Espírito Santo e a Mãe de Deus"
  },
  "prayer-for-priests-1982": {
   "en": "Prayer for priests",
@@ -447,7 +473,8 @@ const themes = {
   "ar": "صلاة من أجل الكهنة",
   "fr": "Prière pour les prêtres",
   "pl": "Modlitwa za kapłanów",
-  "zh-Hans": "为司铎祈祷"
+  "zh-Hans": "为司铎祈祷",
+  "pt": "Oração pelos sacerdotes"
  },
  "holy-thursday-1983": {
   "en": "The Holy Year of the Redemption",
@@ -461,7 +488,8 @@ const themes = {
   "ar": "السنة المقدّسة للفداء",
   "fr": "L’Année sainte de la Rédemption",
   "pl": "Rok Święty Odkupienia",
-  "zh-Hans": "救赎圣年"
+  "zh-Hans": "救赎圣年",
+  "pt": "O Ano Santo da Redenção"
  },
  "holy-thursday-1984": {
   "en": "Ministers of mercy in the Year of the Redemption",
@@ -475,7 +503,8 @@ const themes = {
   "ar": "خدّام الرحمة في سنة الفداء",
   "fr": "Ministres de la miséricorde en l’Année de la Rédemption",
   "pl": "Szafarze miłosierdzia w Roku Odkupienia",
-  "zh-Hans": "救赎圣年中的慈悲施予者"
+  "zh-Hans": "救赎圣年中的慈悲施予者",
+  "pt": "Ministros da misericórdia no Ano da Redenção"
  },
  "holy-thursday-1985": {
   "en": "The priest and young people",
@@ -489,7 +518,8 @@ const themes = {
   "ar": "الكاهن والشباب",
   "fr": "Le prêtre et les jeunes",
   "pl": "Kapłan i młodzież",
-  "zh-Hans": "司铎与青年"
+  "zh-Hans": "司铎与青年",
+  "pt": "O sacerdote e os jovens"
  },
  "holy-thursday-1986": {
   "en": "The Curé of Ars, model of priests",
@@ -503,7 +533,8 @@ const themes = {
   "ar": "خوري آرس مثال الكهنة",
   "fr": "Le Curé d’Ars, modèle des prêtres",
   "pl": "Proboszcz z Ars, wzór kapłanów",
-  "zh-Hans": "亚尔斯本堂神父：司铎的楷模"
+  "zh-Hans": "亚尔斯本堂神父：司铎的楷模",
+  "pt": "O Cura d’Ars, modelo dos sacerdotes"
  },
  "holy-thursday-1987": {
   "en": "Priesthood and prayer: from the Upper Room to Gethsemane",
@@ -517,7 +548,8 @@ const themes = {
   "ar": "الكهنوت والصلاة: من العلّيّة إلى جتسماني",
   "fr": "Sacerdoce et prière : du Cénacle à Gethsémani",
   "pl": "Kapłaństwo i modlitwa: od Wieczernika do Ogrójca",
-  "zh-Hans": "司铎与祈祷：从晚餐厅到革责玛尼"
+  "zh-Hans": "司铎与祈祷：从晚餐厅到革责玛尼",
+  "pt": "Sacerdócio e oração: do Cenáculo ao Getsémani"
  },
  "holy-thursday-1988": {
   "en": "Mary and the priesthood",
@@ -531,7 +563,8 @@ const themes = {
   "ar": "مريم والكهنوت",
   "fr": "Marie et le sacerdoce",
   "pl": "Maryja a kapłaństwo",
-  "zh-Hans": "圣母与司铎职"
+  "zh-Hans": "圣母与司铎职",
+  "pt": "Maria e o sacerdócio"
  },
  "holy-thursday-1989": {
   "en": "Priests and the vocation of the laity",
@@ -545,7 +578,8 @@ const themes = {
   "ar": "الكهنة ودعوة العلمانيّين",
   "fr": "Les prêtres et la vocation des laïcs",
   "pl": "Kapłani a powołanie świeckich",
-  "zh-Hans": "司铎与教友的圣召"
+  "zh-Hans": "司铎与教友的圣召",
+  "pt": "Os sacerdotes e a vocação dos leigos"
  },
  "holy-thursday-1990": {
   "en": "“Veni Creator”: the Holy Spirit and priestly formation",
@@ -559,7 +593,8 @@ const themes = {
   "ar": "«هلمّ أيّها الروح الخالق»: الروح القدس وتنشئة الكهنة",
   "fr": "« Veni Creator » : l’Esprit Saint et la formation sacerdotale",
   "pl": "„Veni Creator”: Duch Święty i formacja kapłańska",
-  "zh-Hans": "「求造物主圣神降临」：圣神与司铎培育"
+  "zh-Hans": "「求造物主圣神降临」：圣神与司铎培育",
+  "pt": "«Veni Creator»: o Espírito Santo e a formação sacerdotal"
  },
  "holy-thursday-1991": {
   "en": "“The Spirit of the Lord is upon me”: Christ, source of every vocation",
@@ -573,7 +608,8 @@ const themes = {
   "ar": "«روح الربّ عليّ»: المسيح ينبوع كلّ دعوة",
   "fr": "« L’Esprit du Seigneur est sur moi » : le Christ, source de toute vocation",
   "pl": "„Duch Pański spoczywa na Mnie”: Chrystus źródłem każdego powołania",
-  "zh-Hans": "「上主的神临于我身上」：基督是一切圣召的泉源"
+  "zh-Hans": "「上主的神临于我身上」：基督是一切圣召的泉源",
+  "pt": "«O Espírito do Senhor está sobre Mim»: Cristo, fonte de toda a vocação"
  },
  "holy-thursday-1992": {
   "en": "“I am the true vine”: abiding in Christ",
@@ -587,7 +623,8 @@ const themes = {
   "ar": "«أنا الكرمة الحقّ»: الثبات في المسيح",
   "fr": "« Je suis la vraie vigne » : demeurer dans le Christ",
   "pl": "„Ja jestem prawdziwym krzewem winnym”: trwać w Chrystusie",
-  "zh-Hans": "「我是真葡萄树」：住在基督内"
+  "zh-Hans": "「我是真葡萄树」：住在基督内",
+  "pt": "«Eu sou a videira verdadeira»: permanecer em Cristo"
  },
  "holy-thursday-1993": {
   "en": "The Catechism of the Catholic Church",
@@ -601,7 +638,8 @@ const themes = {
   "ar": "التعليم المسيحيّ للكنيسة الكاثوليكيّة",
   "fr": "Le Catéchisme de l’Église catholique",
   "pl": "Katechizm Kościoła Katolickiego",
-  "zh-Hans": "《天主教教理》"
+  "zh-Hans": "《天主教教理》",
+  "pt": "O Catecismo da Igreja Católica"
  },
  "holy-thursday-1994": {
   "en": "The priest and the family",
@@ -615,7 +653,8 @@ const themes = {
   "ar": "الكاهن والعائلة",
   "fr": "Le prêtre et la famille",
   "pl": "Kapłan i rodzina",
-  "zh-Hans": "司铎与家庭"
+  "zh-Hans": "司铎与家庭",
+  "pt": "O sacerdote e a família"
  },
  "holy-thursday-1995": {
   "en": "Women in the life of the priest",
@@ -629,7 +668,8 @@ const themes = {
   "ar": "المرأة في حياة الكاهن",
   "fr": "La femme dans la vie du prêtre",
   "pl": "Kobieta w życiu kapłana",
-  "zh-Hans": "妇女在司铎生活中的地位"
+  "zh-Hans": "妇女在司铎生活中的地位",
+  "pt": "A mulher na vida do sacerdote"
  },
  "holy-thursday-1996": {
   "en": "The priestly vocation",
@@ -643,7 +683,8 @@ const themes = {
   "ar": "الدعوة الكهنوتيّة",
   "fr": "La vocation sacerdotale",
   "pl": "Powołanie kapłańskie",
-  "zh-Hans": "司铎圣召"
+  "zh-Hans": "司铎圣召",
+  "pt": "A vocação sacerdotal"
  },
  "holy-thursday-1997": {
   "en": "Jesus Christ, Priest for ever",
@@ -657,7 +698,8 @@ const themes = {
   "ar": "يسوع المسيح كاهن إلى الأبد",
   "fr": "Jésus-Christ, prêtre pour l’éternité",
   "pl": "Jezus Chrystus, Kapłan na wieki",
-  "zh-Hans": "耶稣基督，永远的司祭"
+  "zh-Hans": "耶稣基督，永远的司祭",
+  "pt": "Jesus Cristo, Sacerdote para sempre"
  },
  "holy-thursday-1998": {
   "en": "The Holy Spirit",
@@ -671,7 +713,8 @@ const themes = {
   "ar": "الروح القدس",
   "fr": "L’Esprit Saint",
   "pl": "Duch Święty",
-  "zh-Hans": "圣神"
+  "zh-Hans": "圣神",
+  "pt": "O Espírito Santo"
  },
  "holy-thursday-1999": {
   "en": "“Abba, Father!”",
@@ -685,7 +728,8 @@ const themes = {
   "ar": "«أبّا، أيّها الآب!»",
   "fr": "« Abba, Père ! »",
   "pl": "„Abba, Ojcze!”",
-  "zh-Hans": "「阿爸，父呀！」"
+  "zh-Hans": "「阿爸，父呀！」",
+  "pt": "«Abbá, Pai!»"
  },
  "holy-thursday-2000": {
   "en": "From the Upper Room in Jerusalem",
@@ -699,7 +743,8 @@ const themes = {
   "ar": "من العلّيّة في أورشليم",
   "fr": "Depuis le Cénacle de Jérusalem",
   "pl": "Z Wieczernika w Jerozolimie",
-  "zh-Hans": "写自耶路撒冷晚餐厅"
+  "zh-Hans": "写自耶路撒冷晚餐厅",
+  "pt": "A partir do Cenáculo de Jerusalém"
  },
  "holy-thursday-2001": {
   "en": "The sacrament of reconciliation",
@@ -713,7 +758,8 @@ const themes = {
   "ar": "سرّ المصالحة",
   "fr": "Le sacrement de la réconciliation",
   "pl": "Sakrament pojednania",
-  "zh-Hans": "和好圣事"
+  "zh-Hans": "和好圣事",
+  "pt": "O sacramento da reconciliação"
  },
  "holy-thursday-2002": {
   "en": "The priest as confessor: Jesus and Zacchaeus",
@@ -727,7 +773,8 @@ const themes = {
   "ar": "الكاهن المعرِّف: يسوع وزكّا",
   "fr": "Le prêtre confesseur : Jésus et Zachée",
   "pl": "Kapłan spowiednik: Jezus i Zacheusz",
-  "zh-Hans": "听告解的司铎：耶稣与匝凯"
+  "zh-Hans": "听告解的司铎：耶稣与匝凯",
+  "pt": "O sacerdote confessor: Jesus e Zaqueu"
  },
  "holy-thursday-2004": {
   "en": "Born from the Eucharist: priesthood and vocations",
@@ -741,7 +788,8 @@ const themes = {
   "ar": "مولودون من الإفخارستيا: الكهنوت والدعوات",
   "fr": "Nés de l’Eucharistie : sacerdoce et vocations",
   "pl": "Zrodzeni z Eucharystii: kapłaństwo i powołania",
-  "zh-Hans": "生于圣体：司铎职与圣召"
+  "zh-Hans": "生于圣体：司铎职与圣召",
+  "pt": "Nascidos da Eucaristia: sacerdócio e vocações"
  },
  "holy-thursday-2005": {
   "en": "Living the words of consecration",
@@ -755,7 +803,8 @@ const themes = {
   "ar": "عيش كلمات التقديس",
   "fr": "Vivre les paroles de la consécration",
   "pl": "Żyć słowami konsekracji",
-  "zh-Hans": "活出成圣体的话"
+  "zh-Hans": "活出成圣体的话",
+  "pt": "Viver as palavras da consagração"
  }
 };
 export function themeTitle(doc, locale) { return themes[doc.id]?.[locale] ?? null; }

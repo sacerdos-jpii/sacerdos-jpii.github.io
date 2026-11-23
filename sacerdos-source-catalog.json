@@ -14,7 +14,8 @@
     "ru",
     "ar",
     "fr",
-    "pl"
+    "pl",
+    "pt"
   ],
   "searchRequirements": {
     "type": "full-text",
@@ -316,6 +317,11 @@
           "locale": "la",
           "format": "html",
           "url": "https://www.vatican.va/content/john-paul-ii/la/letters/1986/documents/hf_jp-ii_let_19860316_sacerdoti-giovedi-santo.html"
+        },
+        {
+          "locale": "pt",
+          "format": "html",
+          "url": "https://www.clerus.org/clerus/dati/2010-05/03-13/1986_pt.html"
         }
       ]
     },

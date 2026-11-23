@@ -1,5 +1,5 @@
 const prefix = 'sacerdos-';
-const cacheName = prefix + 'v18';
+const cacheName = prefix + 'v19';
 const dataCache = prefix + 'data';
 const files = ['./index.html', './style.css', './app.js', './i18n.js', './zhmap.js', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './landing-face.jpg', './sacerdos-source-catalog.json', './editions/index.json'];

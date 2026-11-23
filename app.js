@@ -2,6 +2,9 @@ import {LOCALES, names, t, displayTitle, themeTitle, citation, quoteWithCitation
 import zhmap from './zhmap.js';
 
 const el = id => document.getElementById(id);
+// True only inside the Android/iOS app (Capacitor); the website is unaffected.
+const nativeApp = !!window.Capacitor?.isNativePlatform?.();
+const plugin = name => window.Capacitor?.Plugins?.[name];
 const select = el('locale');
 const query = el('query');
 const results = el('results');
@@ -203,6 +206,7 @@ const letterMastheads = {
   en: /^(?:letter\b|holy thursday letter\b|the pope's letter\b).*priest/,
   es: /^carta\b.*sacerdotes/, it: /^lettera\b.*sacerdoti/, fr: /^lettre\b.*pretres/,
   de: /^(?:schreiben|brief)\b.*priester/, nl: /^brief\b.*priesters/, pl: /^list(?:al)?\b.*kaplan/,
+  pt: /^(?:carta|oracao)\b.*sacerdotes/,
   ru: /^(?:письмо|послание).*священник/, uk: /^(?:лист|послання).*священник/, ar: /^رسالة.*الكهنة/,
 };
 function repeatedTitle(doc, locale, part, i) {
@@ -210,7 +214,7 @@ function repeatedTitle(doc, locale, part, i) {
   const value = fold(part.text, locale).replaceAll('·', '').replace(/^[«「『“"]|[»」』”"]$/gu, '');
   if (splitTitles[doc.id + '/' + locale]?.includes(i)) return true;
   if (value === fold(displayTitle(doc, locale), locale)) return true;
-  if (/^(?:giovanni paolo|juan pablo|jean[- ]paul|john paul|johannes paul|jan pawel|ioanna? paulus) ii\.?$|^(?:іван пав(?:ло|іл) (?:іі|ii)|иоанн павел ii|يوحنا بولس الثاني)$/u.test(value)) return true;
+  if (/^(?:giovanni paolo|juan pablo|jean[- ]paul|john paul|johannes paul|jan pawel|joao paulo|ioanna? paulus) ii\.?$|^(?:іван пав(?:ло|іл) (?:іі|ii)|иоанн павел ii|يوحنا بولس الثاني)$/u.test(value)) return true;
   if (locale.startsWith('zh')) return false;
   if (doc.kind === 'priests-letter' || doc.kind === 'priests-prayer') {
     return value.length < 250 && Boolean(letterMastheads[locale]?.test(value));
@@ -601,10 +605,18 @@ function exportMarkdown(items) {
     lines.push('', ...a.text.split('\n').map(l => '> ' + l), '');
     if (a.note) lines.push(a.note, '');
   }
+  const fileName = `SACERDOS notes ${date}.md`;
+  if (nativeApp && plugin('Filesystem') && plugin('Share')) {
+    // Android WebView cannot download blobs: write a file and open the share sheet instead.
+    plugin('Filesystem').writeFile({path: fileName, data: lines.join('\n'), directory: 'CACHE', encoding: 'utf8'})
+      .then(({uri}) => plugin('Share').share({title: fileName, files: [uri]}))
+      .catch(console.error);
+    return;
+  }
   const blob = new Blob([lines.join('\n')], {type: 'text/markdown'});
   const anchor = document.createElement('a');
   anchor.href = URL.createObjectURL(blob);
-  anchor.download = `SACERDOS notes ${date}.md`;
+  anchor.download = fileName;
   document.body.append(anchor);
   anchor.click();
   anchor.remove();
@@ -791,7 +803,8 @@ try {
   console.error(error);
 }
 
-const updateNetwork = () => { el('offline').hidden = navigator.onLine; };
+// The app bundles every edition, so it never needs the offline badge.
+const updateNetwork = () => { el('offline').hidden = nativeApp || navigator.onLine; };
 addEventListener('online', updateNetwork);
 addEventListener('offline', updateNetwork);
 updateNetwork();
@@ -801,6 +814,14 @@ addEventListener('beforeinstallprompt', event => {
   install.hidden = false;
   install.onclick = async () => { await event.prompt(); install.hidden = true; };
 });
-if ('serviceWorker' in navigator) {
+if (nativeApp) {
+  // Android back button: close an open dialog first, then go back, then leave the app.
+  plugin('App')?.addListener('backButton', ({canGoBack}) => {
+    const dialog = document.querySelector('dialog[open]');
+    if (dialog) dialog.close();
+    else if (canGoBack) history.back();
+    else plugin('App').exitApp();
+  });
+} else if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(console.error);
 }
